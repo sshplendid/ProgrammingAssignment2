@@ -1,24 +1,24 @@
-## Put comments here that give an overall description of what your functions do
+## Week 2 Assignment by SeHun Shin.
 ## => This is a source code about R Programming - week 2 - assignment.
-##    Before executing this code, you need to install a package named "MASS".
-##    This package contains a function called "ginv" returns the inversion of matrix.
-##    So if you don't install this package, do it before you execute this code.
 
-
-install.packages("MASS")
-library(MASS)
 
 ## Write a short comment describing this function
 ## makeCacheMatrix: This function creates a special "matrix" object that can cache its inverse.
 makeCacheMatrix <- function(x = matrix()) {
-  m <- NULL
+  i <- NULL # inner variable for inversion of matrix
+  # inner variable m is for matrix
+  # setting the matrix
   set <- function(y) {
-    x <<- y
-    m <<- NULL
+    m <<- y
+    i <<- NULL
   }
-  get <- function() x
-  setInverse <- function(inverse) m <<- inverse
-  getInverse <- function() m
+  # getting the matrix
+  get <- function() m
+  
+  # setting inversion of matrix
+  setInverse <- function(inverse) i <<- inverse
+  # getting inversion of matrix
+  getInverse <- function() i
   list(set = set, get = get,
        setInverse = setInverse,
        getInverse = getInverse)
@@ -30,16 +30,20 @@ makeCacheMatrix <- function(x = matrix()) {
 ## If the inverse has already been calculated (and the matrix has not changed), 
 ## then the cachesolve should retrieve the inverse from the cache.
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  ## Return a matrix that is the inverse of 'x'
+  
+  # 'm' is an inner variable for inverse.
   m <- x$getInverse()
+  # if m is not null, return m with a message.
   if(!is.null(m)) {
     message("getting cached data")
     return(m)
   }
+  # if m is null, this calculate the inversion of matrix
   data <- x$get()
-  m <- ginv(data)
+  m <- solve(data)
   x$setInverse(m)
-  m
+  m # return m
 }
 
 
